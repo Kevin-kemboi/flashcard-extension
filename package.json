@@ -1,0 +1,23 @@
+{
+  "name": "flash-extension",
+  "version": "1.0.0",
+  "description": "Flashcard Builder Chrome Extension with Gesture Detection",
+  "type": "module",
+  "dependencies": {
+    "@tensorflow/tfjs": "4.17.0",
+    "@tensorflow/tfjs-core": "4.17.0",
+    "@tensorflow/tfjs-layers": "4.17.0",
+    "@tensorflow/tfjs-converter": "4.17.0",
+    "@tensorflow-models/handpose": "0.1.0",
+    "long": "5.2.3"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.246",
+    "@types/jest": "29.5.5",
+    "@types/node": "20.6.3",
+    "esbuild": "0.17.19",
+    "jest": "29.7.0",
+    "ts-jest": "29.1.1",
+    "typescript": "5.2.2"
+  }
+}

@@ -1,1 +1,16 @@
-{ "compilerOptions": { "target": "es6", "module": "commonjs", "strict": true, "esModuleInterop": true, "outDir": "./dist", "rootDir": "./", "sourceMap": true }, "include": ["extension/**/*", "gesture-core/**/*", "backend/**/*", "tests/**/*"] } 
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "lib": ["dom", "es6"],
+    "skipLibCheck": true
+  },
+  "include": ["extension/**/*", "gesture-core/**/*", "backend/**/*", "tests/**/*"],
+  "exclude": ["node_modules"]
+}
