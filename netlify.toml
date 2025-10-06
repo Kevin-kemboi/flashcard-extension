@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build:netlify"
+  publish = "site"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/gesture"
+  to = "/gesture-core/test.html"
+  status = 301
+
+[[headers]]
+  for = "/gesture-core/bundle.js"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
