@@ -4,168 +4,121 @@ npm run dev:site
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Flashcard Companion – Gesture Powered Learning</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Flashcard Companion – Remember More with Gestures</title>
+	<meta name="description" content="Turn what you read into spaced repetition flashcards and rate difficulty with simple hand gestures. Faster capture, smarter memory." />
+	<meta property="og:title" content="Flashcard Companion" />
+	<meta property="og:description" content="Capture, gesture‑rate, and retain more — a lightweight flashcard workflow with adaptive review." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="/" />
+	<meta property="og:image" content="/social-preview.png" />
+	<meta name="twitter:card" content="summary_large_image" />
 	<link rel="icon" href="/favicon.ico" />
-	<style>
-		:root {
-			--bg:#0f1014; --bg-alt:#181b22; --panel:#1f242c; --panel-glow:#26303a;
-			--accent:#6366f1; --accent-glow:#818cf8; --accent-soft:rgba(99,102,241,.15);
-			--danger:#ef4444; --ok:#10b981; --warn:#f59e0b; --text:#e5e7eb; --muted:#9ca3af;
-			--grad:linear-gradient(140deg,#6366f1,#8b5cf6 55%,#ec4899);
-			--radius:18px; --radius-sm:8px; --shadow:0 4px 22px -6px rgba(0,0,0,.55);
-		}
-		* { box-sizing:border-box; }
-		html,body { margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,sans-serif; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
-		a { color:var(--accent); text-decoration:none; }
-		a:hover { text-decoration:underline; }
-		header {
-			position:relative; padding:4.5rem 1.5rem 4rem; text-align:center; overflow:hidden;
-			background:radial-gradient(circle at 20% 15%,rgba(99,102,241,.35),transparent 70%),radial-gradient(circle at 80% 60%,rgba(236,72,153,.28),transparent 65%);
-		}
-		header:before { content:""; position:absolute; inset:0; background:linear-gradient(160deg,rgba(99,102,241,.35),rgba(139,92,246,.15) 55%,rgba(15,16,20,0.2)); mix-blend-mode:overlay; pointer-events:none; }
-		h1 { margin:0 0 1rem; font-size:clamp(2.2rem,4vw,3.2rem); font-weight:700; letter-spacing:.5px; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
-		.tagline { font-size:clamp(1rem,1.7vw,1.25rem); max-width:860px; margin:0 auto 2rem; line-height:1.45; color:var(--muted); }
-		.cta-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
-		.btn { --b:var(--accent); --b-h:var(--accent-glow); position:relative; display:inline-flex; align-items:center; gap:.55rem; background:var(--b); color:#fff; font-weight:600; padding:.85rem 1.4rem; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,.08); font-size:.9rem; letter-spacing:.35px; cursor:pointer; outline:none; box-shadow:0 6px 18px -6px rgba(99,102,241,.45); transition:.25s; }
-		.btn:hover { background:var(--b-h); transform:translateY(-2px); box-shadow:0 10px 26px -8px rgba(99,102,241,.55); text-decoration:none; }
-		.btn.secondary { --b:#334155; --b-h:#475569; box-shadow:0 6px 18px -6px rgba(0,0,0,.5); }
-		.btn.outline { background:rgba(99,102,241,.08); backdrop-filter:blur(10px); border:1px solid var(--accent-soft); box-shadow:none; color:var(--accent); }
-		.btn.outline:hover { background:var(--accent); color:#fff; }
-		main { width:100%; max-width:1180px; margin:0 auto; padding:3rem clamp(1rem,4vw,2.25rem) 5rem; }
-		section { margin:0 auto 4.5rem; max-width:1000px; }
-		h2 { font-size:clamp(1.5rem,2.5vw,2.2rem); margin:0 0 1.4rem; font-weight:600; letter-spacing:.5px; }
-		.dim { color:var(--muted); font-size:.92rem; letter-spacing:.35px; }
-		.feature-grid { display:grid; gap:1.6rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
-		.feature { position:relative; background:linear-gradient(155deg,rgba(39,45,55,.85),rgba(30,36,44,.8)); border:1px solid rgba(255,255,255,.05); padding:1.15rem 1.15rem 1.35rem; border-radius:22px; box-shadow:var(--shadow); overflow:hidden; backdrop-filter:blur(6px); }
-		.feature:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 80% 15%, rgba(99,102,241,.22), transparent 70%); opacity:.9; pointer-events:none; }
-		.feature h3 { margin:.2rem 0 .55rem; font-size:1.05rem; font-weight:600; letter-spacing:.4px; }
-		.pill { display:inline-block; font-size:.6rem; letter-spacing:.8px; padding:.35rem .55rem; border-radius:999px; background:var(--accent-soft); color:var(--accent-glow); font-weight:600; text-transform:uppercase; margin-bottom:.55rem; }
-		.steps { display:grid; gap:1.2rem; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); margin-top:1.4rem; }
-		.step { background:var(--panel); border:1px solid rgba(255,255,255,.05); padding:1rem .95rem 1.1rem; border-radius:18px; position:relative; overflow:hidden; box-shadow:var(--shadow); }
-		.step:before { content:attr(data-step); position:absolute; top:-10px; right:-6px; font-size:4.2rem; font-weight:700; line-height:1; color:rgba(255,255,255,.04); }
-		.step h4 { margin:.15rem 0 .4rem; font-size:.95rem; letter-spacing:.5px; font-weight:600; }
-		.mini { font-size:.75rem; line-height:1.25rem; color:var(--muted); }
-		.gesture-list { display:flex; flex-wrap:wrap; gap:.55rem; margin:1.1rem 0 0; }
-		.g { background:#232a33; border:1px solid rgba(255,255,255,.05); padding:.55rem .7rem; border-radius:12px; font-size:.7rem; letter-spacing:.5px; display:flex; align-items:center; gap:.45rem; color:var(--muted); }
-		.g span { font-weight:600; color:var(--text); }
-		.panel-wide { background:linear-gradient(135deg,#1b2027,#161b22); padding:2.2rem clamp(1rem,3vw,2rem); border:1px solid rgba(255,255,255,.06); border-radius:28px; box-shadow:0 18px 42px -18px rgba(0,0,0,.65); position:relative; overflow:hidden; }
-		.panel-wide:before { content:""; position:absolute; width:620px; height:620px; top:-380px; left:-260px; background:radial-gradient(circle at center,rgba(99,102,241,.28),transparent 70%); filter:blur(40px); opacity:.55; }
-		.panel-wide h3 { margin:0 0 .85rem; font-size:1.35rem; }
-		.inline-cards { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; }
-		.inline-cards .ic { flex:1 1 220px; background:#20262e; border:1px solid rgba(255,255,255,.05); padding:.85rem .9rem 1rem; border-radius:16px; font-size:.75rem; line-height:1.15rem; position:relative; }
-		.ic strong { display:block; font-size:.8rem; margin-bottom:.35rem; letter-spacing:.4px; }
-		.try { margin-top:1.4rem; display:flex; gap:.9rem; flex-wrap:wrap; }
-		.float-gesture { position:absolute; width:170px; height:170px; right:-30px; top:-30px; background:radial-gradient(circle at 35% 40%,rgba(236,72,153,.65),rgba(139,92,246,.15)); filter:blur(14px); opacity:.55; pointer-events:none; }
-		footer { text-align:center; padding:3.2rem 1rem 3rem; font-size:.7rem; color:var(--muted); }
-		.credits a { color:var(--accent-glow); }
-		.divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent); margin:4rem 0; }
-		@media (max-width:720px){
-			header { padding:3.6rem 1.1rem 3.5rem; }
-			.panel-wide { padding:1.8rem 1.2rem 2rem; }
-			main { padding:2.2rem 1.1rem 4rem; }
-		}
-	</style>
+	<link rel="preload" href="/gesture-core/bundle.js" as="script" />
+	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-	<header>
-		<h1>Flashcard Companion</h1>
-		<p class="tagline">Turn anything you read into smart flashcards. Use simple hand gestures to rate how well you know it & let adaptive review guide your progress.</p>
-		<div class="cta-row">
-			<a class="btn" href="/gesture-core/test.html">Try Gesture Demo</a>
-			<a class="btn outline" href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">View Repository</a>
+	<header class="hero" role="banner">
+		<div class="hero__inner">
+			<h1 class="hero__title">Flashcard Companion</h1>
+			<p class="hero__tag">Capture text. Rate with your hand. Remember longer.</p>
+			<nav class="hero__actions" aria-label="Primary">
+				<a class="btn btn--primary" href="/gesture-core/test.html">Try Gesture Demo</a>
+				<a class="btn btn--ghost" href="#install">Install Extension</a>
+				<a class="btn btn--subtle" href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">Code</a>
+			</nav>
 		</div>
 	</header>
-	<main>
-		<section>
-			<h2>Why You'll Love It</h2>
-			<div class="feature-grid">
-				<div class="feature">
-					<span class="pill">Capture</span>
-					<h3>Instant Cards</h3>
-					<p class="dim">Highlight text on any page & drop it straight into your study deck.</p>
-				</div>
-				<div class="feature">
-					<span class="pill">Hands-Free</span>
-					<h3>Gesture Ratings</h3>
-					<p class="dim">Thumbs up, peace sign, pinch & more – each gesture sets a difficulty state.</p>
-				</div>
-				<div class="feature">
-					<span class="pill">Adaptive</span>
-					<h3>Smart Review</h3>
-					<p class="dim">Cards return right when you need them. Easier cards fade, tougher ones reappear sooner.</p>
-				</div>
-				<div class="feature">
-					<span class="pill">Progress</span>
-					<h3>Visual Mastery</h3>
-					<p class="dim">Track unknown → active → mastered through clean visual indicators.</p>
-				</div>
+
+	<main id="main" class="main" tabindex="-1">
+		<section class="block" aria-labelledby="benefits-title">
+			<h2 id="benefits-title" class="h-section">Simple Workflow</h2>
+			<ul class="benefits" role="list">
+				<li class="benefit">
+					<span class="benefit__icon" aria-hidden="true">⚡</span>
+					<h3>One‑Step Capture</h3>
+					<p>Highlight → Add. No form clutter.</p>
+				</li>
+				<li class="benefit">
+					<span class="benefit__icon" aria-hidden="true">✋</span>
+					<h3>Hands‑Free Rating</h3>
+					<p>Thumbs up / pinch / peace sign → difficulty set.</p>
+				</li>
+				<li class="benefit">
+					<span class="benefit__icon" aria-hidden="true">📈</span>
+					<h3>Adaptive Return</h3>
+					<p>Hard cards come back sooner. Easy ones fade.</p>
+				</li>
+				<li class="benefit">
+					<span class="benefit__icon" aria-hidden="true">🧠</span>
+					<h3>Less Friction</h3>
+					<p>Stay in flow — fewer clicks, more recall.</p>
+				</li>
+			</ul>
+		</section>
+
+		<section class="block steps" aria-labelledby="steps-title">
+			<h2 id="steps-title" class="h-section">3 Steps</h2>
+			<ol class="steps__list">
+				<li><strong>Capture</strong><span>Highlight text you care about.</span></li>
+				<li><strong>Review</strong><span>Open the deck & show answers.</span></li>
+				<li><strong>Gesture Rate</strong><span>Use your hand → schedule adapts.</span></li>
+			</ol>
+		</section>
+
+		<section class="block legend" aria-labelledby="legend-title">
+			<h2 id="legend-title" class="h-section">Gesture Map</h2>
+			<div class="legend__row" role="list">
+				<span class="tag" role="listitem">👍 Easy</span>
+				<span class="tag" role="listitem">✌️ Medium</span>
+				<span class="tag" role="listitem">👎 Hard</span>
+				<span class="tag" role="listitem">✋ Unknown</span>
+				<span class="tag" role="listitem">🤏 Focus</span>
+				<span class="tag" role="listitem">👊 Review</span>
+				<span class="tag" role="listitem">👌 Mastered</span>
+				<span class="tag" role="listitem">👉 Active</span>
+			</div>
+			<p class="note" role="note">Camera never leaves your device. All processing is local.</p>
+		</section>
+
+		<section class="block cta" aria-labelledby="try-title">
+			<h2 id="try-title" class="h-section">Try It</h2>
+			<p class="lead">Launch the live gesture sandbox and watch recognitions update in real time.</p>
+			<div class="cta__buttons">
+				<a class="btn btn--primary btn--lg" href="/gesture-core/test.html">Launch Sandbox</a>
+				<a class="btn btn--ghost btn--lg" href="#install">Install Extension</a>
 			</div>
 		</section>
 
-		<section class="panel-wide" aria-labelledby="how-title">
-			<div class="float-gesture" aria-hidden="true"></div>
-			<h2 id="how-title">How It Works</h2>
-			<div class="steps">
-				<div class="step" data-step="1">
-					<h4>Add Anything</h4>
-					<p class="mini">Highlight a phrase or definition while browsing & add it to your deck in one click.</p>
-				</div>
-				<div class="step" data-step="2">
-					<h4>Review & Gesture</h4>
-					<p class="mini">During a session, perform a gesture (thumbs up, fist, pinch…) to label difficulty.</p>
-				</div>
-				<div class="step" data-step="3">
-					<h4>Adaptive Return</h4>
-					<p class="mini">The system spaces reviews so you see the right card at the right time.</p>
-				</div>
-				<div class="step" data-step="4">
-					<h4>Reach Mastery</h4>
-					<p class="mini">Cards graduate to <strong>mastered</strong>; you focus energy where it matters.</p>
-				</div>
-			</div>
-			<div class="gesture-list" aria-label="Gesture legend">
-				<div class="g"><span>👍</span> easy</div>
-				<div class="g"><span>👎</span> hard</div>
-				<div class="g"><span>✋</span> unknown</div>
-				<div class="g"><span>👊</span> review</div>
-				<div class="g"><span>✌️</span> medium</div>
-				<div class="g"><span>🤏</span> focus</div>
-				<div class="g"><span>👌</span> mastered</div>
-				<div class="g"><span>👉</span> active</div>
-			</div>
+		<section id="install" class="block install" aria-labelledby="install-title">
+			<h2 id="install-title" class="h-section">Install (Under 30s)</h2>
+			<details class="install__panel" open>
+				<summary class="install__summary">Show steps</summary>
+				<ol class="install__steps">
+					<li><strong>Download</strong> or clone the project.</li>
+					<li>Go to <code>chrome://extensions</code>.</li>
+					<li>Enable <em>Developer Mode</em>.</li>
+					<li>Click <em>Load Unpacked</em> → choose <code>extension</code> folder.</li>
+				</ol>
+				<p class="install__hint">Highlight text → open popup → Add Highlighted Text → Rate via gestures.</p>
+			</details>
 		</section>
 
-		<section>
-			<h2>Try It Now</h2>
-			<p class="dim">Open the live gesture sandbox. Allow camera access. See real‑time recognition & mapped difficulty labels.</p>
-			<div class="try">
-				<a class="btn" href="/gesture-core/test.html">Launch Gesture Sandbox</a>
-				<a class="btn secondary" href="#install">Install Extension Guide</a>
-			</div>
-		</section>
-
-		<div class="divider" role="separator" aria-hidden="true"></div>
-
-		<section id="install">
-			<h2>Install the Browser Extension</h2>
-			<div class="inline-cards">
-				<div class="ic"><strong>1. Get the Files</strong> Download or clone the project folder.</div>
-				<div class="ic"><strong>2. Open Extensions</strong> In Chrome address bar type <em>chrome://extensions</em>.</div>
-				<div class="ic"><strong>3. Enable Developer Mode</strong> Top‑right toggle.</div>
-				<div class="ic"><strong>4. Load Unpacked</strong> Select the <code>extension</code> folder. Done!</div>
-			</div>
-			<p class="mini" style="margin-top:1rem;">Now highlight text on any page, open the popup & press “Add Highlighted Text”. Launch Gesture Mode from the popup to rate hands‑free.</p>
-		</section>
-
-		<section>
-			<h2>Focus on Learning — Not Clicks</h2>
-			<p class="dim">The more friction removed from capturing and rating knowledge, the more you stay in flow. Gestures keep you thinking, not fiddling.</p>
+		<section class="block minimal" aria-labelledby="focus-title">
+			<h2 id="focus-title" class="h-section">Stay in Flow</h2>
+			<p class="lead">Less UI gymnastics. More cognitive reps. A tiny layer that amplifies retention.</p>
 		</section>
 	</main>
-	<footer>
-		<div class="credits">Crafted for continuous learning • <a href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">Project Repository</a></div>
-		<div style="margin-top:.6rem;">© 2025 Flashcard Companion</div>
+
+	<footer class="site-footer" role="contentinfo">
+		<p><a href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">Repository</a> • © 2025 Flashcard Companion</p>
 	</footer>
+
+	<script>
+		// Respect reduced motion
+		if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+			document.documentElement.classList.add('reduce-motion');
+		}
+	</script>
 </body>
 </html>
