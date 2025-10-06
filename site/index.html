@@ -5,120 +5,146 @@ npm run dev:site
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<title>Flashcard Companion – Remember More with Gestures</title>
-	<meta name="description" content="Turn what you read into spaced repetition flashcards and rate difficulty with simple hand gestures. Faster capture, smarter memory." />
-	<meta property="og:title" content="Flashcard Companion" />
-	<meta property="og:description" content="Capture, gesture‑rate, and retain more — a lightweight flashcard workflow with adaptive review." />
+	<title>Flashcard Companion – Learn Deeply with Gestures</title>
+	<meta name="description" content="An educational spaced repetition companion: understand, self‑assess with hand gestures, and strengthen memory retention." />
+	<meta property="og:title" content="Flashcard Companion – Gesture Learning" />
+	<meta property="og:description" content="See how spaced repetition + gesture based self‑assessment boosts retention. Interactive demo included." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="/" />
 	<meta property="og:image" content="/social-preview.png" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<link rel="icon" href="/favicon.ico" />
-	<link rel="preload" href="/gesture-core/bundle.js" as="script" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@500;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-	<header class="hero" role="banner">
-		<div class="hero__inner">
-			<h1 class="hero__title">Flashcard Companion</h1>
-			<p class="hero__tag">Capture text. Rate with your hand. Remember longer.</p>
-			<nav class="hero__actions" aria-label="Primary">
-				<a class="btn btn--primary" href="/gesture-core/test.html">Try Gesture Demo</a>
-				<a class="btn btn--ghost" href="#install">Install Extension</a>
-				<a class="btn btn--subtle" href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">Code</a>
+	<header class="hero hero--education" role="banner">
+		<div class="hero__inner center-stack">
+			<h1 class="hero__title hero__title--educational">Flashcard Companion</h1>
+			<p class="hero__tag hero__tag--wide">An educational memory trainer: spaced repetition core + gesture‑based self‑assessment. Explore how rating your own recall shapes retention.</p>
+			<div class="demo-card" aria-live="polite" aria-label="Interactive flashcard demo">
+				<div class="demo-card__stage">
+					<div class="flashcard" id="demoCard" data-side="front">
+						<div class="flashcard__inner">
+							<div class="flashcard__front" id="cardFront">What is spaced repetition?</div>
+							<div class="flashcard__back" id="cardBack" hidden>A scheduling method that resurfaces information at expanding intervals to strengthen long‑term memory.</div>
+						</div>
+					</div>
+				</div>
+				<div class="demo-card__controls">
+					<button class="btn btn--flip" id="flipBtn" aria-controls="demoCard">Show Answer</button>
+					<div class="ratings" role="group" aria-label="Rate your recall difficulty">
+						<button class="chip" data-rate="easy" title="Thumbs Up (Easy)">👍</button>
+						<button class="chip" data-rate="medium" title="Peace Sign (Medium)">✌️</button>
+						<button class="chip" data-rate="hard" title="Thumbs Down (Hard)">👎</button>
+						<button class="chip" data-rate="focus" title="Pinch (Focus)">🤏</button>
+						<button class="chip" data-rate="review" title="Fist (Review)">👊</button>
+					</div>
+				</div>
+				<p class="demo-status" id="demoStatus">Flip the card, then choose how well you knew it.</p>
+			</div>
+			<nav class="hero__actions hero__actions--compressed" aria-label="Primary">
+				<a class="btn btn--primary" href="/gesture-core/test.html">Gesture Sandbox</a>
+				<a class="btn btn--ghost" href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">Source</a>
 			</nav>
 		</div>
 	</header>
 
-	<main id="main" class="main" tabindex="-1">
-		<section class="block" aria-labelledby="benefits-title">
-			<h2 id="benefits-title" class="h-section">Simple Workflow</h2>
-			<ul class="benefits" role="list">
-				<li class="benefit">
-					<span class="benefit__icon" aria-hidden="true">⚡</span>
-					<h3>One‑Step Capture</h3>
-					<p>Highlight → Add. No form clutter.</p>
-				</li>
-				<li class="benefit">
-					<span class="benefit__icon" aria-hidden="true">✋</span>
-					<h3>Hands‑Free Rating</h3>
-					<p>Thumbs up / pinch / peace sign → difficulty set.</p>
-				</li>
-				<li class="benefit">
-					<span class="benefit__icon" aria-hidden="true">📈</span>
-					<h3>Adaptive Return</h3>
-					<p>Hard cards come back sooner. Easy ones fade.</p>
-				</li>
-				<li class="benefit">
-					<span class="benefit__icon" aria-hidden="true">🧠</span>
-					<h3>Less Friction</h3>
-					<p>Stay in flow — fewer clicks, more recall.</p>
-				</li>
-			</ul>
-		</section>
-
-		<section class="block steps" aria-labelledby="steps-title">
-			<h2 id="steps-title" class="h-section">3 Steps</h2>
-			<ol class="steps__list">
-				<li><strong>Capture</strong><span>Highlight text you care about.</span></li>
-				<li><strong>Review</strong><span>Open the deck & show answers.</span></li>
-				<li><strong>Gesture Rate</strong><span>Use your hand → schedule adapts.</span></li>
-			</ol>
-		</section>
-
-		<section class="block legend" aria-labelledby="legend-title">
-			<h2 id="legend-title" class="h-section">Gesture Map</h2>
-			<div class="legend__row" role="list">
-				<span class="tag" role="listitem">👍 Easy</span>
-				<span class="tag" role="listitem">✌️ Medium</span>
-				<span class="tag" role="listitem">👎 Hard</span>
-				<span class="tag" role="listitem">✋ Unknown</span>
-				<span class="tag" role="listitem">🤏 Focus</span>
-				<span class="tag" role="listitem">👊 Review</span>
-				<span class="tag" role="listitem">👌 Mastered</span>
-				<span class="tag" role="listitem">👉 Active</span>
-			</div>
-			<p class="note" role="note">Camera never leaves your device. All processing is local.</p>
-		</section>
-
-		<section class="block cta" aria-labelledby="try-title">
-			<h2 id="try-title" class="h-section">Try It</h2>
-			<p class="lead">Launch the live gesture sandbox and watch recognitions update in real time.</p>
-			<div class="cta__buttons">
-				<a class="btn btn--primary btn--lg" href="/gesture-core/test.html">Launch Sandbox</a>
-				<a class="btn btn--ghost btn--lg" href="#install">Install Extension</a>
+	<main id="main" class="main main--narrow" tabindex="-1">
+		<section class="edu block" aria-labelledby="why-title">
+			<h2 id="why-title" class="h-section alt">Why This Works</h2>
+			<div class="edu__grid">
+				<article class="edu__item">
+					<h3>1. Active Recall</h3>
+					<p>You try to retrieve the answer before seeing it. This struggle signals the brain to reinforce pathways.</p>
+				</article>
+				<article class="edu__item">
+					<h3>2. Self‑Assessment</h3>
+					<p>A quick rating (gesture or click) captures subjective difficulty – a powerful proxy for future forgetting.</p>
+				</article>
+				<article class="edu__item">
+					<h3>3. Adaptive Spacing</h3>
+					<p>Easier items recede. Hard or uncertain ones resurface sooner. Time is focused where retention is weakest.</p>
+				</article>
+				<article class="edu__item">
+					<h3>4. Reduced Friction</h3>
+					<p>Hands‑free rating keeps cognitive focus on material – not UI clicks – preserving attention and flow.</p>
+				</article>
 			</div>
 		</section>
 
-		<section id="install" class="block install" aria-labelledby="install-title">
-			<h2 id="install-title" class="h-section">Install (Under 30s)</h2>
-			<details class="install__panel" open>
-				<summary class="install__summary">Show steps</summary>
-				<ol class="install__steps">
-					<li><strong>Download</strong> or clone the project.</li>
-					<li>Go to <code>chrome://extensions</code>.</li>
-					<li>Enable <em>Developer Mode</em>.</li>
-					<li>Click <em>Load Unpacked</em> → choose <code>extension</code> folder.</li>
-				</ol>
-				<p class="install__hint">Highlight text → open popup → Add Highlighted Text → Rate via gestures.</p>
-			</details>
+		<section class="concept block" aria-labelledby="concept-title">
+			<h2 id="concept-title" class="h-section alt">Memory Cycle</h2>
+			<div class="cycle">
+				<div class="cycle__phase"><span class="cycle__num">1</span><strong>Attempt</strong><p>Recall before reveal.</p></div>
+				<div class="cycle__phase"><span class="cycle__num">2</span><strong>Reveal</strong><p>Expose answer; compare.</p></div>
+				<div class="cycle__phase"><span class="cycle__num">3</span><strong>Rate</strong><p>Gesture or chip = difficulty.</p></div>
+				<div class="cycle__phase"><span class="cycle__num">4</span><strong>Schedule</strong><p>Engine updates next interval.</p></div>
+				<div class="cycle__phase"><span class="cycle__num">5</span><strong>Reinforce</strong><p>Timely re‑exposure cements.</p></div>
+			</div>
+			<p class="cycle__note">Each loop optimizes spacing: early density → widening gaps → durable memory.</p>
 		</section>
 
-		<section class="block minimal" aria-labelledby="focus-title">
-			<h2 id="focus-title" class="h-section">Stay in Flow</h2>
-			<p class="lead">Less UI gymnastics. More cognitive reps. A tiny layer that amplifies retention.</p>
+		<section class="legend block" aria-labelledby="gesture-map-title">
+			<h2 id="gesture-map-title" class="h-section alt">Gesture → Meaning</h2>
+			<div class="legend__row legend__row--center" role="list">
+				<span class="tag tag--easy" role="listitem">👍 Easy</span>
+				<span class="tag tag--med" role="listitem">✌️ Medium</span>
+				<span class="tag tag--hard" role="listitem">👎 Hard</span>
+				<span class="tag tag--unknown" role="listitem">✋ Unknown</span>
+				<span class="tag tag--focus" role="listitem">🤏 Focus</span>
+				<span class="tag tag--review" role="listitem">👊 Review</span>
+				<span class="tag tag--mastered" role="listitem">👌 Mastered</span>
+				<span class="tag tag--active" role="listitem">👉 Active</span>
+			</div>
+			<p class="note" role="note">All gesture recognition is client‑side only.</p>
 		</section>
 	</main>
 
-	<footer class="site-footer" role="contentinfo">
-		<p><a href="https://github.com/Kevin-kemboi/flashcard-extension" target="_blank" rel="noopener">Repository</a> • © 2025 Flashcard Companion</p>
+	<footer class="site-footer site-footer--alt" role="contentinfo">
+		<p>© 2025 Flashcard Companion • <a href="/gesture-core/test.html">Try Gestures</a> • <a target="_blank" rel="noopener" href="https://github.com/Kevin-kemboi/flashcard-extension">Source</a></p>
 	</footer>
 
 	<script>
-		// Respect reduced motion
-		if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-			document.documentElement.classList.add('reduce-motion');
+	(function(){
+		const card = document.getElementById('demoCard');
+		const front = document.getElementById('cardFront');
+		const back = document.getElementById('cardBack');
+		const flipBtn = document.getElementById('flipBtn');
+		const status = document.getElementById('demoStatus');
+		const chips = document.querySelectorAll('.chip');
+		const deck = [
+			{q:'What is spaced repetition?',a:'A scheduling method that resurfaces information at expanding intervals to strengthen long‑term memory.'},
+			{q:'Why rate difficulty?',a:'Subjective difficulty predicts how fast you will forget. It guides interval adjustments.'},
+			{q:'What strengthens memory?',a:'Effortful, successful retrieval spaced over time with feedback and varied contexts.'},
+			{q:'Role of gestures?',a:'Faster self‑assessment, reduced friction, sustained focus on content not interface.'},
+			{q:'Goal of adaptive review?',a:'Spend less time on mastered items and more on vulnerable, fading memories.'}
+		];
+		let idx = 0; let side='front';
+		function render(){
+			const c = deck[idx];
+			front.textContent = c.q; back.textContent = c.a; back.hidden = true; front.hidden = false; side='front';
+			card.setAttribute('data-side','front');
+			flipBtn.textContent='Show Answer';
+			status.textContent='Think first. Then flip. Then rate.';
 		}
+		function flip(){
+			if(side==='front'){ front.hidden=true; back.hidden=false; side='back'; card.setAttribute('data-side','back'); flipBtn.textContent='Hide Answer'; status.textContent='Rate how well you recalled it.'; }
+			else { back.hidden=true; front.hidden=false; side='front'; card.setAttribute('data-side','front'); flipBtn.textContent='Show Answer'; status.textContent='Think first. Then flip. Then rate.'; }
+		}
+		flipBtn.addEventListener('click',flip);
+		chips.forEach(ch=>{
+			ch.addEventListener('click',()=>{
+				if(side==='front'){ flip(); return; }
+				const rating = ch.getAttribute('data-rate');
+				status.textContent = 'Logged: '+rating+' → scheduling next exposure...';
+				setTimeout(()=>{ idx=(idx+1)%deck.length; render(); }, 650);
+			});
+		});
+		render();
+	})();
 	</script>
 </body>
 </html>
