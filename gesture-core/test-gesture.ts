@@ -60,7 +60,7 @@ async function main() {
       window.clearTimeout(loopHandle);
       loopHandle = null;
     }
-    ui.status.textContent = 'Loading model...';
+  ui.status.textContent = 'Loading model...';
     try {
       detector = new GestureDetector(ui.video);
       await detector.initialize();
