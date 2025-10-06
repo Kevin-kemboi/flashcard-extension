@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gesture Mode</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin:0; padding:10px; background:#121212; color:#eee; }
+    h1 { font-size:16px; margin:0 0 10px; }
+    #status { font-size:12px; color:#ccc; margin-top:4px; }
+    #panel { display:flex; flex-direction:column; gap:8px; }
+    #videoWrapper { position:relative; width:480px; }
+    video { width:480px; height:360px; background:#000; border:1px solid #333; border-radius:4px; }
+    #overlay { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; color:#0f0; font-size:11px; text-shadow:0 0 4px #000; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .badge { padding:2px 6px; border-radius:10px; font-size:11px; background:#333; text-transform:uppercase; }
+    .badge.easy { background:#256c2c; }
+    .badge.hard { background:#7a1a1a; }
+    .badge.unknown { background:#555; }
+    .badge.review { background:#7a5b17; }
+    .badge.medium { background:#1d3f73; }
+    .badge.focus { background:#6d1458; }
+    .badge.mastered { background:#0d4d57; }
+    .badge.active { background:#402d76; }
+    #currentCard { font-size:13px; }
+    #log { font-family: ui-monospace, monospace; font-size:11px; max-height:120px; overflow:auto; background:#1e1e1e; padding:6px; border:1px solid #333; }
+    button { cursor:pointer; padding:6px 10px; border:1px solid #444; border-radius:4px; background:#1d1d1d; color:#eee; }
+    button:hover { background:#2a2a2a; }
+  </style>
+</head>
+<body>
+  <h1>Gesture Mode</h1>
+  <div id="panel">
+    <div class="row">
+      <button id="back">Back</button>
+      <button id="cycle">Next Card</button>
+      <button id="toggle">Pause</button>
+      <span id="status">Idle</span>
+    </div>
+    <div id="currentCard">(No flashcards)</div>
+    <div class="row" id="lastGestureRow" style="display:none;">
+      <span>Gesture:</span><span id="gestureBadge" class="badge unknown">none</span>
+      <span>Difficulty:</span><span id="difficultyBadge" class="badge unknown">unknown</span>
+      <span>FPS: <span id="fps">0</span></span>
+    </div>
+    <div id="videoWrapper">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+    </div>
+    <div id="log"></div>
+  </div>
+  <script src="gesture-page.js"></script>
+</body>
+</html>

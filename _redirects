@@ -1,0 +1,12 @@
+# Netlify redirects file
+# This ensures proper routing for the application
+
+# Redirect domain aliases to primary domain
+https://flashcard-gesture-app.netlify.app/* https://flashcard-gesture.netlify.app/:splat 301!
+
+# Handle Single Page App routing
+/* /index.html 200
+
+# Allow direct access to gesture test page
+/gesture-core/test.html /gesture-core/test.html 200
+/gesture-core/bundle.js /gesture-core/bundle.js 200

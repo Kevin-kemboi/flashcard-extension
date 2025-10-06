@@ -1,14 +1,23 @@
-{
+  {
     "manifest_version": 3,
     "name": "Flashcard Builder",
-    "version": "1.0",
-    "description": "Create flashcards by highlighting text with gesture feedback.",
-    "permissions": ["activeTab", "storage", "contextMenus", "scripting"],
+    "version": "1.1",
+    "description": "Create flashcards by highlighting text with gesture feedback and spaced repetition.",
+    "permissions": ["activeTab", "storage", "contextMenus", "scripting", "tabs"],
     "background": {
       "service_worker": "background.js"
     },
     "action": {
       "default_popup": "popup.html"
+    },
+    "web_accessible_resources": [
+      {
+        "resources": ["gesture-page.html", "gesture-page.js"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+    "content_security_policy": {
+      "extension_pages": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'"
     },
     "content_scripts": [
       {

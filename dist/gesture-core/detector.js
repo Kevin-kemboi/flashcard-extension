@@ -19,9 +19,20 @@ export class GestureDetector {
     }
     initialize() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield tf.setBackend('webgl');
+            // Try WebGL first, fallback to CPU if unavailable (prevents silent failure in some environments like headless / embedded viewers)
+            try {
+                yield tf.setBackend('webgl');
+            }
+            catch (e) {
+                console.warn('[GestureDetector] WebGL backend failed, falling back to CPU:', e);
+                yield tf.setBackend('cpu');
+            }
+            yield tf.ready();
+            console.log('[GestureDetector] Using backend:', tf.getBackend());
             this.model = yield handpose.load();
+            console.log('[GestureDetector] Handpose model loaded');
             yield this.setupWebcam();
+            console.log('[GestureDetector] Webcam initialized');
         });
     }
     setupWebcam() {
@@ -38,18 +49,47 @@ export class GestureDetector {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.model)
                 return null;
-            const predictions = yield this.model.estimateHands(this.video);
+            const predictions = yield this.model.estimateHands(this.video).catch(err => {
+                console.error('[GestureDetector] estimateHands error', err);
+                return [];
+            });
             if (predictions.length === 0)
                 return null;
-            // Simplified gesture detection (pseudo-logic)
             const landmarks = predictions[0].landmarks;
-            const thumbTip = landmarks[4];
-            const indexTip = landmarks[8];
-            if (thumbTip[1] < indexTip[1])
+            const [thumbTip, indexTip, middleTip, ringTip, pinkyTip] = [landmarks[4], landmarks[8], landmarks[12], landmarks[16], landmarks[20]];
+            const wrist = landmarks[0];
+            const y = (p) => p[1];
+            const x = (p) => p[0];
+            const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+            // Basic vertical relation for thumbs up / down
+            if (y(thumbTip) + 15 < y(indexTip))
                 return 'thumbs_up';
-            if (thumbTip[1] > indexTip[1])
+            if (y(thumbTip) - 15 > y(indexTip))
                 return 'thumbs_down';
-            return 'flat_palm';
+            // Fist: all finger tips close to wrist
+            const avgFingerDist = [thumbTip, indexTip, middleTip, ringTip, pinkyTip].reduce((s, f) => s + dist(f, wrist), 0) / 5;
+            if (avgFingerDist < 60)
+                return 'fist';
+            // Peace: index and middle extended (higher than ring & pinky), ring & pinky curled
+            if (y(indexTip) + 10 < y(ringTip) && y(middleTip) + 10 < y(ringTip)) {
+                if (y(ringTip) > y(indexTip) && y(pinkyTip) > y(indexTip))
+                    return 'peace';
+            }
+            // Pinch: thumb and index very close
+            if (dist(thumbTip, indexTip) < 30 && dist(indexTip, middleTip) > 40)
+                return 'pinch';
+            // OK sign: thumb and index close AND middle further AND circle formed heuristic
+            if (dist(thumbTip, indexTip) < 25 && dist(middleTip, indexTip) > 45)
+                return 'ok_sign';
+            // Point: index far extended relative to middle & ring & pinky (index much higher)
+            if (y(indexTip) + 20 < y(middleTip) && y(indexTip) + 20 < y(ringTip) && y(indexTip) + 20 < y(pinkyTip))
+                return 'point';
+            // Flat palm: spread fingers (large horizontal spread) and vertical alignment similar
+            const xs = [thumbTip, indexTip, middleTip, ringTip, pinkyTip].map(p => x(p));
+            const spread = Math.max(...xs) - Math.min(...xs);
+            if (spread > 180)
+                return 'flat_palm';
+            return null;
         });
     }
     updateFlashcardDifficulty(flashcardId) {

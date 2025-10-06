@@ -2,11 +2,58 @@
 <html>
 <head>
   <title>Flashcard Builder</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin:10px; min-width:340px; }
+    h1 { font-size:16px; margin:0 0 8px; }
+    #actions { display:flex; gap:6px; margin-bottom:10px; }
+    button { cursor:pointer; padding:6px 10px; border:1px solid #ccc; border-radius:4px; background:#fafafa; }
+    button:hover { background:#f0f0f0; }
+    ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+    li { background:#fff; border:1px solid #ddd; border-radius:6px; padding:6px 8px; display:flex; flex-direction:column; gap:4px; }
+    .front { font-weight:600; }
+    .back { font-size:12px; color:#555; }
+    .meta { display:flex; align-items:center; gap:6px; }
+    .badge { font-size:10px; padding:2px 6px; border-radius:10px; background:#eee; text-transform:uppercase; letter-spacing:.5px; }
+    .badge.easy { background:#d4f8d4; }
+    .badge.hard { background:#ffd6d6; }
+    .badge.unknown { background:#eee; }
+    .badge.review { background:#ffe6b3; }
+    .badge.medium { background:#d9e8ff; }
+    .badge.focus { background:#ffe0f7; }
+    .badge.mastered { background:#c9f2ff; }
+    .badge.active { background:#e1d4ff; }
+    .difficulty-buttons { display:flex; flex-wrap:wrap; gap:4px; }
+    .difficulty-buttons button { font-size:10px; padding:2px 6px; }
+    #empty { font-size:12px; color:#777; }
+    #gesture-status { font-size:11px; color:#555; margin-top:6px; }
+  </style>
 </head>
 <body>
   <h1>Flashcards</h1>
+  <div id="actions">
+    <button id="add-flashcard">Add Highlighted Text</button>
+    <button id="refresh">Refresh</button>
+    <button id="start-gesture">Start Gesture Mode</button>
+  </div>
+  <div id="gesture-status"></div>
+  <input id="search" placeholder="Search..." style="width:100%; padding:6px 8px; margin:6px 0; border:1px solid #ccc; border-radius:4px;" />
+  <div id="analytics" style="font-size:12px; background:#fafafa; border:1px solid #ddd; padding:8px; border-radius:6px; margin-bottom:8px; display:none;">
+    <strong>Progress</strong>
+    <div id="progress-bar" style="height:8px; background:#eee; border-radius:4px; overflow:hidden; margin:4px 0 6px;">
+      <div id="progress-fill" style="height:100%; width:0; background:#4caf50;"></div>
+    </div>
+    <div id="counts"></div>
+    <div id="due"></div>
+  </div>
   <ul id="flashcard-list"></ul>
-  <button id="add-flashcard">Add Highlighted Text</button>
+  <div id="empty" style="display:none;">No flashcards yet. Highlight text and click "Add".</div>
+  <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+    <button id="export">Export JSON</button>
+    <label style="display:inline-block;">
+      <input type="file" id="import" accept="application/json" style="display:none;" />
+      <span style="cursor:pointer; padding:6px 10px; border:1px solid #ccc; border-radius:4px; background:#fafafa;">Import JSON</span>
+    </label>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>

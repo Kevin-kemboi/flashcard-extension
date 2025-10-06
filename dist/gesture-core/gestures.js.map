@@ -1,1 +1,1 @@
-{"version":3,"file":"gestures.js","sourceRoot":"","sources":["../../gesture-core/gestures.ts"],"names":[],"mappings":"AAGA,MAAM,CAAC,MAAM,mBAAmB,GAA4B;IAC1D,SAAS,EAAE,MAAM;IACjB,WAAW,EAAE,MAAM;IACnB,SAAS,EAAE,SAAS;CACrB,CAAC"}
+{"version":3,"file":"gestures.js","sourceRoot":"","sources":["../../gesture-core/gestures.ts"],"names":[],"mappings":"AAWA,wDAAwD;AACxD,uEAAuE;AACvE,MAAM,CAAC,MAAM,mBAAmB,GAA4B;IAC1D,SAAS,EAAE,MAAM;IACjB,WAAW,EAAE,MAAM;IACnB,SAAS,EAAE,SAAS;IACpB,IAAI,EAAE,QAAQ;IACd,KAAK,EAAE,QAAQ;IACf,KAAK,EAAE,OAAO;IACd,OAAO,EAAE,UAAU;IACnB,KAAK,EAAE,QAAQ;CAChB,CAAC"}
